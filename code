@@ -1,0 +1,99 @@
+//9
+#include <queue>
+#include <iostream>
+#include <locale>
+using namespace std;
+
+void BFS(int *(*mass),int *be, int pos,int n)
+{
+	queue <int> q;
+	q.push(pos);
+	be[pos] = 0;
+	while(!q.empty())
+	{
+		pos=q.front();
+		printf("%d ", pos+1);
+		q.pop();
+		for(int i = 0; i < n; i++)
+		{
+			if(mass[pos][i]!=0 && be[i]==-1)
+			{
+				q.push(i);
+				be[i] = be[pos]+1;
+			}
+		}
+	}
+}
+
+int main()
+{
+setlocale(LC_ALL, "Rus");
+int** a, n, k = 0;
+int i = 0, j = 0,w,t=0;
+printf("Введите кол-во строк и столбцов\n");
+scanf_s("%d", &n);
+a = (int**)malloc(n * sizeof(int*));
+for (int i = 0; i < n; i++)
+{
+	a[i] = (int*)malloc(n * sizeof(int));
+}
+for (int i = 0; i < n; i++)
+{
+	for (int j = i; j < n; j++)
+	{
+		w = rand() % 2;
+		if (w == 1)
+		{
+			a[i][j] = 1;// rand() % 10;
+			a[j][i] = a[i][j];
+		}
+		else 
+		{
+			a[i][j] = 0;
+			a[j][i] = a[i][j];
+		}
+		if (i == j)
+		{
+			a[i][j] = 0;
+		}
+	}
+}
+
+for (int i = 0; i < n; i++)
+{
+	for (int j = 0; j < n; j++)
+	{
+		printf(" %d", a[i][j]);
+		if (a[i][j] != 0)
+		{
+			t++;
+		}
+		k++;
+	}
+	printf("\n");
+}
+
+int pos = 0;
+int* be = (int*)malloc(n * sizeof(int));
+for(int i = 0; i < n;i++)
+{
+	be[i] = -1;
+}
+for (i = 0; i < n; i++)
+{
+	if(be[i] == -1)
+	{
+		printf("Введите вершину\n");
+		scanf_s("%d", &pos);
+		BFS(a,be,pos-1,n);
+	}
+}
+printf("\n");
+for(int i = 0; i < n; i++)
+{
+	printf("расстояние от %d до %d = %d\n",pos,i+1,be[i]);
+}
+free(a);
+getchar();
+getchar();
+}
